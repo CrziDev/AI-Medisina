@@ -38,11 +38,16 @@ body {
 /* ------------------ SIDE PANEL SECTION ------------------ */
 .side-panel-section {
     height: 100%;
-    min-width: 300px;
+    width: 300px;
     background-color: var(--color-primary);
     padding: 20px;
     display: flex;
     flex-direction: column;
+}
+
+.nav-hide {
+    width: 50px;
+    transition: width 1s;
 }
 
 .side-panel-wrapper {
@@ -112,11 +117,13 @@ body {
 
 #welcome-message {
     width: 100%;
-    font-size: 40px;
+    font-size: 3vw;
+    /* font-size: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
 }
 
 .content-section {

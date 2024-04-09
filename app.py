@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import re
+import json
 
 app = Flask(__name__)
 
@@ -57,33 +58,60 @@ Notify the user that the question is not medical related"""
 
 @app.route('/')
 def home():
-  # createChatInstance(userID)
   # get_AI_response(setAI)
   data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').get()
 
   return render_template('index.html',data = data)
 
+
+# Get List of Chat rooms
 @app.route('/get',methods=['POST','GET'])
 def chat():
     sender = request.json['query']
     chatRoomID = request.json['chatRoomID']
     return get_AI_response(sender,chatRoomID)
 
+# Get Specific chatroom convertsation
+@app.route('/get/topic',methods=['POST','GET'])
+def getMessages():
+    chatRoomID = request.json['chatRoomID']
+    data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').stream()
+    messages_list = []
+    for doc in data:
+        messages_list.append(doc.to_dict())
+
+    return json.dumps(messages_list)
+
+# Get Specific chatroom convertsation
+@app.route('/create/chatroom',methods=['POST','GET'])
+def createRoom():
+    chatDetails = {
+        'title': 'New chat',
+    } 
+    data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').document()
+    data.set(chatDetails)
+
+    print(data.id)
+    return json.dumps({'id':data.id})
+
+
+
+
 def get_AI_response(text,chatRoomID):
     convo.send_message(text)
     responseText = convo.last.text
-    
+    convoDetails = {
+        'sender': text,
+        'response': responseText,
+    }
+    db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document().set(convoDetails)
+    print(responseText)
     return responseText
 
 def createChatInstance(userID):
   db.collection('user_chat_instance').document(userID).set({'userID':userID})
 
 
-def createChatRoom(title):
-    chatDetails = {
-        'title': title,
-    } 
-    db.collection('user_chat_instance').document(userID).collection('chat_rooms').document().set(chatDetails)
   
 if __name__ == '__main__':
    app.run()

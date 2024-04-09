@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Medisina</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/reset.css') }}">
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- Side Panel section-->
+        <div class="side-panel-section">
+            <div class="close-button">X</div>
+            <div class="side-panel-wrapper">
+                <div clss="recent-chat-wrapper">
+                    <div class="new-chat">
+                        <p class="item-list">Recent</p>
+                        <div class="newchat-btn">
+                            <p>+</p>
+                        </div>
+                    </div>
+                    <div class="chat-history">
+                        {% for data in data %}
+                        <div class="chat-topic ">
+                            <p id="chat-topic" data-chatID="{{data.id}}">{{data.to_dict()['title']}} </p>
+                            <p class="history-dots">...</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="navigation-item">
+                    <p class="item-list">Help </p>
+                    <p class="item-list">Settings </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Section -->
+        <div class="content-section">
+            <div class="header">
+                <div class="title-logo"></div>
+                <div class="profile-section"></div>
+            </div>
+            <div class="chat-section">
+                <div id="chat-box-container" class="chat-box-wrapper">
+                    <div id="welcome-message">
+                        <p>Hi there, how can I help you?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="sender-input-field">
+                <input type="text" name="query" id="sender-query" value="">
+                <div class="sender-btn">></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    let chatID = 0
+    const senderBtn = document.querySelector('.sender-btn')
+    const senderQuery = document.querySelector('#sender-query')
+    const chatBox = document.querySelector('#chat-box-container')
+    let activeTopicID = ''
+
+    senderBtn.addEventListener('click', function () {
+        console.log(activeTopicID);
+        chatContent = "chatID" + chatID;
+        document.querySelector('#welcome-message').style.display = 'none'
+        let senderContainer = document.createElement('div');
+        senderContainer.innerHTML =
+            '<div class="sender-promt chat-information">' +
+            '<div class="sender-info chat-profile">' +
+            '<div class="profile-pic"></div>' +
+            '<h4>You</h4>' +
+            '</div>' +
+            '<div class="sender-text chat-content">' + senderQuery.value + '</div>' +
+            '</div>';
+
+        let sender = senderContainer.firstChild;
+        chatBox.appendChild(sender);
+
+        let responseContainer = document.createElement('div');
+        responseContainer.innerHTML =
+            '<div class="response-promt chat-information">' +
+            '<div class="response-info chat-profile">' +
+            '<div class="profile-pic"></div>' +
+            '<h4>AI</h4>' +
+            '</div>' +
+            '<div class="response-text chat-content"><div id="' + chatContent + '" class="loader"> <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span><div></div>' +
+            '</div>';
+
+        let response = responseContainer.firstChild;
+        chatBox.appendChild(response);
+
+        axios.post('/get', {
+            query: senderQuery.value,
+            chatRoomID: activeTopicID
+        }).then(function (data) {
+            chatID = chatID + 1
+
+            console.log(chatID);
+            chatContent = document.querySelector('#' + chatContent)
+            senderQuery.value = ''
+            chatContent.classList.remove('loader')
+
+            chatContent.innerHTML = formatTransmission(data.data)
+
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+    })
+
+
+
+    function getChatTopic() {
+        chatContent = "chatID" + chatID;
+        document.querySelector('#welcome-message').style.display = 'none'
+        let senderContainer = document.createElement('div')
+
+        axios.post('/get', {
+            query: senderQuery.value
+        }).then(function (data) {
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+    }
+
+
+
+    function formatTransmission(responseString) {
+        var lines = responseString.split('\n');
+        var html = '';
+
+        lines.forEach(function (line, index, array) {
+
+            if (line.substring(0, 2) == '**') {
+                let indexOfCol = line.indexOf(':');
+                line = line.replace(/\*\*(.*?)\*\*/g, '$1').trim();
+
+
+                if (line.includes(':')) {
+                    if (indexOfCol == line.length + 1) {
+                        html += '<br><p><strong>' + line + '</strong></p>';
+                    } else {
+                        html += '<p style="margin-top:10px">' + line + '</p>';
+                    }
+                } else {
+                    html += '<p><strong style="margin-top:10px">' + line + '</strong></p>';
+                }
+
+            } else if (line.substring(0, 4) == '* **') {
+                let indexOfCol = line.indexOf(':');
+                line = line.replace(/\* \*\*(.*?)\*\*/g, '$1').trim();
+                html += '<ul style="margin-left:20px"><li>' + line + '</li></ul>';
+
+            } else if (line.substring(0, 8) == '    * **') {
+                let indexOfCol = line.indexOf(':');
+                line = line.replace(/\* \*\*(.*?)\*\*/g, '$1').trim();
+                html += '<ul style="margin-left:40px"><li>' + line + '</li></ul>';
+
+            } else if (line.substring(0, 9) == '        *') {
+                let indexOfCol = line.indexOf(':');
+                line = line.replace(/\* \*\*(.*?)\*\*/g, '$1').trim();
+                html += '<p style="margin-left:50px">- ' + line.trim().substring(2) + '</p>';
+
+            } else if (line == '') {
+                html += '<br>';
+            } else {
+                html += '<p> ' + line.trim() + '</p> ';
+            }
+        });
+
+        return html;
+    }
+
+    let chatTopic = document.querySelectorAll('.chat-topic')
+
+    console.log(chatTopic);
+    chatTopic.forEach(function (box) {
+        box.addEventListener('click', function (el) {
+            chatTopic.forEach(function (e) {
+                e.classList.remove('chat-active')
+            })
+            el.target.classList.add('chat-active')
+            activeTopicID = el.target.querySelector('#chat-topic').getAttribute('data-chatID')
+        })
+
+    })
+
+
+</script>

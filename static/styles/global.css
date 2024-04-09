@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --font-family-primary: 'Poppins', sans-serif;
+    /* Colors */
+    --color-primary: #dbeaf0;
+    --color-secondary: #c0c0c0;
+    --color-white: rgb(255, 255, 255);
+    --color-grey: #F2F3F7;
+    --color-red: #B20404;
+    --color-yellow: #D99E2C;
+}
+
+
+p,
+input {
+    color: rgb(70, 69, 69);
+}
+
+.item-list {
+    color: rgb(71, 69, 69);
+    font-weight: 500;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: var(--font-family-primary);
+}
+
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+
+/* ------------------ SIDE PANEL SECTION ------------------ */
+.side-panel-section {
+    height: 100%;
+    min-width: 300px;
+    background-color: var(--color-primary);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-panel-wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
+/* Close panel button  */
+
+.close-button {
+    font-size: 30px;
+    font-weight: 300;
+    font-size: 30px;
+    margin-bottom: 10px;
+
+}
+
+.chat-history div,
+.new-chat {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+/* New chat  */
+.new-chat {
+    margin-bottom: 20px
+}
+
+.new-chat .newchat-btn {
+    background-color: rgb(214, 213, 213);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    font-size: 18px;
+
+}
+
+/* History Box  */
+.chat-history div {
+    padding: 4px 15px;
+    border-radius: 20px;
+}
+
+.chat-active {
+    background-color: #3dc1c5;
+    color: white;
+}
+
+.chat-active p {
+    color: white;
+}
+
+.history-dots {
+    font-size: 20px;
+}
+
+
+/* ------------------ MAIN COTENT SECTION------------------ */
+
+
+#welcome-message {
+    width: 100%;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.content-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 30px;
+    overflow-y: auto;
+
+
+}
+
+/* Header section  */
+.header {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: rgb(226, 226, 226);
+}
+
+/* Chat section  */
+.chat-section {
+    width: 100%;
+    padding: 0 60px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+.chat-information {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 20px
+}
+
+.response-promt {
+    background-color: var(--color-primary);
+}
+
+.chat-profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chat-profile .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    margin-right: 10px;
+}
+
+.chat-content {
+    margin-left: 60px;
+}
+
+.sender-input-field {
+    background-color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    height: 50px;
+    border-radius: 40px;
+    margin-bottom: 20px;
+}
+
+.sender-input-field input {
+    border: none;
+    background-color: transparent;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+
+}
+
+.sender-btn {
+    margin-right: 20px;
+    font-size: 40px;
+    font-weight: bold;
+}

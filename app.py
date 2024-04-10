@@ -59,25 +59,30 @@ setAI = """ Only asnwer if the question is related to medical,
 If the question is not medical-related tell the user that the question is not medical related 
 and respond I'm sorry, but I'm not able to answer your question. It does not appear to be medical-related"""
 
-@app.route('/homepage')
-def home():
-  setUpAi(setAI)
-  print('here')
-  print(userID)
-  # createChatInstance(userID)
-  data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').get()
-  return render_template('index.html',data = data)
 
+# Landing Page
+@app.route('/')
+def landing():
+  return render_template('landing.html')
+
+# Login Page 
 @app.route('/login')
 def login():
   return render_template('login.html')
 
-
+# Signup Page 
 @app.route('/signup',methods = ['POST', 'GET'])
-def signup():
-    
+def signup():   
   return render_template('signup.html')
 
+# Homepage 
+@app.route('/homepage')
+def home():
+  setUpAi(setAI)
+  data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').get()
+  return render_template('index.html',data = data)
+
+# Login Submit post 
 @app.route('/login/submit',methods = ['POST', 'GET'])
 def loginCheck():
   if request.method == 'POST':
@@ -107,7 +112,7 @@ def loginCheck():
   return redirect(url_for('home'))
   
 
-
+# Signup submit Post 
 @app.route('/signup/submit',methods = ['POST', 'GET'])
 def signupSubmit():
   if request.method == 'POST':
@@ -143,10 +148,6 @@ def signupSubmit():
     })
     
   return redirect(url_for('login'))
-
-@app.route('/')
-def landing():
-  return render_template('landing.html')
 
 # Get List of Chat rooms
 @app.route('/get',methods=['POST','GET'])

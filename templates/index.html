@@ -5,31 +5,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Medisina</title>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/sidebar-styles.css') }}">
+    <script src="{{ url_for('static',filename='js/sidebar.js') }}"></script>
+
+
 </head>
 
 <body>
 
     <div class="main-container">
-
         <!-- Side Panel section-->
-        <div class="side-panel-section">
-            <div class="close-button">X</div>
-            <div class="side-panel-wrapper">
+        <div class="sidebar" id="mySidebar">
+            <!-- <div class="close-button">X</div> -->
+            <div id="sidebarlogo" class=" d-flex  align-items-center ps-2 pt-2 ">
+                <button class="btn ms-1 me-2 " type="button" onclick="toggleNav()"><i
+                        class="bi h5 bi-x-lg"></i></button>
+            </div>
+            <div class="side-panel-wrapper pe-3 ps-3">
                 <div clss="recent-chat-wrapper">
-                    <div class="new-chat">
-                        <p class="item-list">Recent</p>
-                        <div class="newchat-btn">
-                            <p>+</p>
+
+                    <div class="d-flex align-items-center w-100">
+
+                        <div class="w-100">
+                            <span class="item-list">Recent</span>
+                        </div>
+                        <div class="newchat-btn ">
+                            <i class="bi bi-plus-lg"></i>
                         </div>
                     </div>
-                    <div class="chat-history">
+                    <div class="chat-history d-flex  w-100 flex-column small ">
                         {% for data in data %}
-                        <div class="chat-topic ">
-                            <p class="chat-topic-content" data-chatID="{{data.id}}">{{data.to_dict()['title']}} </p>
-                            <p class="history-dots">...</p>
+
+                        <div class="chat-topic d-flex   p-0">
+                            <div class="w-100  pt-2 pb-2 ps-2">
+                                <span class="chat-topic-content"
+                                    data-chatID="{{data.id}}">{{data.to_dict()['title']}}</span>
+
+                            </div>
+                            <div class="pt-2 pb-2 text-center" style="width: 50px;">
+                                <i class="bi bi-three-dots"></i>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -40,30 +73,70 @@
                 </div>
             </div>
         </div>
+        <div class="sidebar text-dark collapse">
 
-        <!-- Main Section -->
-        <div class="content-section">
-            <div class="header">
-                <div class="title-logo"></div>
-                <div class="profile-section"></div>
+
+            <div class="text-dark">
+
             </div>
-            <div class="chat-section">
-                <div class="chat-box-wrapper">
-                    <div id="welcome-message">
-                        <p>Hi there, how can I help you?</p>
+        </div>
+
+        <div id="main" class="w-100" style="height: 100vg;">
+            <nav class="navbar  navbar-expand-md navbar-light fw-bold sticky-top   " id="nav">
+                <div class="container-fluid">
+                    <div class="d-flex w-100 align-items-center ">
+                        <button class="btn   " id="opnbtn" type="button" onclick="toggleNav()"><i
+                                class="bi h5 bi-list"></i></button>
+
+                        <a href="#" class="navbar-brand ms-3 ">
+                            <div class="d-flex align-items-end">
+                                <h2 class="fs-3" style="font-weight: 550;"> <span style="color:#494949;">AI</span><span
+                                        style="color:#9b9b9b;">-</span><span style="color:#0283a2;">Medisina</span>
+                                </h2>
+                            </div>
+                        </a>
+
+
+
                     </div>
 
-                    <div class="box">
-                        <div id="chat-box-container" class="content-box">
+                </div>
+            </nav>
 
+
+
+            <div class="con d-flex flex-column   justify-content-center ">
+                <div class="overflow-auto d-flex  justify-content-center align-items-top" style="height: 90vh;">
+                    <div class="col-sm-8 ">
+                        <!-- Content -->
+                        <div class="chat-section  p-2">
+                            <div class="chat-box-wrapper ">
+                                <div id="welcome-message" style="height: 90vh;">
+                                    <p class=" h1">Hi there, how can I help you?</p>
+                                </div>
+
+                                <div class="box">
+                                    <div id="chat-box-container" class="content-box">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom-aligned w-100 d-flex justify-content-center pb-sm-4 pb-2">
+                        <div class="sender-input-field shadow-sm bg-light border rounded-pill d-flex col-sm-6 col-11">
+                            <input type="text" name="query" id="sender-query" value="">
+                            <button class="btn sender-btn rounded-pill"><img src="{{ url_for('static',filename='/img/send.svg') }}" alt=""></button>
                         </div>
                     </div>
                 </div>
+
             </div>
-            <div class="sender-input-field">
-                <input type="text" name="query" id="sender-query" value="">
-                <div class="sender-btn">></div>
-            </div>
+
+
+
+            <!-- Main Section -->
+
         </div>
     </div>
 </body>
@@ -89,7 +162,7 @@
             '<div class="sender-promt chat-information">' +
             '<div class="sender-info chat-profile">' +
             '<div class="profile-pic"></div>' +
-            '<h4>You</h4>' +
+            '<p class="h5 pt-2">You</p>' +
             '</div>' +
             '<div class="sender-text chat-content">' + senderQuery.value + '</div>' +
             '</div>';
@@ -102,7 +175,7 @@
             '<div class="response-promt chat-information">' +
             '<div class="response-info chat-profile">' +
             '<div class="profile-pic"></div>' +
-            '<h4>AI</h4>' +
+            '<p class="h5 pt-2">AI</p>' +
             '</div>' +
             '<div class="response-text chat-content"><div id="' + chatContent + '" class="loader"> <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span><div></div>' +
             '</div>';
@@ -170,6 +243,10 @@
 
         topicBoxContainer.classList.add('chat-active')
         topicBoxContainer.classList.add('chat-topic')
+        topicBoxContainer.classList.add('d-flex')
+        topicBoxContainer.classList.add('p-0')
+
+
 
 
         //Attach ID
@@ -177,11 +254,18 @@
             //Assign Active Topic ID
             activeTopicID = response.data['id']
             topicBoxContainer.innerHTML = `
-                                        <p class="chat-topic-content" data-chatID="${response.data['id']}">New chat</p>
-                                        <p class="history-dots">...</p>
-
                                         
+
+                                        <div class="w-100  pt-2 pb-2 ps-2">
+                                <span class="chat-topic-content"
+                                data-chatID="${response.data['id']}">New chat</span>
+
+                            </div>
+                            <div class="pt-2 pb-2 text-center" style="width: 50px;">
+                                <i class="bi bi-three-dots"></i>
+                            </div>
                                     `;
+
 
         }).catch(function (error) {
             console.log(error);
@@ -189,11 +273,13 @@
 
         chatHistory.insertBefore(topicBoxContainer, chatHistory.firstChild);
 
-        chatTopic = document.querySelectorAll('.chat-topic');
-
+        
         chatTopic.forEach(function (box) {
             box.addEventListener('click', function (element) {
-                selectChatActive(element)
+                let targetElement = event.target.closest('.chat-topic');
+                if (targetElement) {
+                    selectChatActive(targetElement);
+                }
             });
 
         })

@@ -1,12 +1,16 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,flash,redirect ,url_for
+import os
 import google.generativeai as genai
 import firebase_admin 
 from firebase_admin import credentials
 from firebase_admin import firestore
+from google.cloud.firestore_v1.base_query import FieldFilter
 import re
 import json
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
+app.config['SESSION_TYPE'] = 'filesystem'
 
 # For firebase 
 cred = credentials.Certificate("credentials.json")
@@ -50,20 +54,99 @@ convo = model.start_chat(history=[
 ])
 
 
-userID = '1'
-setAI = """ Only asnwer if the question is related to medical: 
-Provide a medically accurate answer based on your knowledge and research. Ensure the information is evidence-based and up-to-date.
-If the question is not medical-related:**
-Notify the user that the question is not medical related"""
+userID = ''
+setAI = """ Only asnwer if the question is related to medical,
+If the question is not medical-related tell the user that the question is not medical related 
+and respond I'm sorry, but I'm not able to answer your question. It does not appear to be medical-related"""
 
-@app.route('/')
+@app.route('/homepage')
 def home():
-  # get_AI_response(setAI)
-  createChatInstance(userID)
+  setUpAi(setAI)
+  print('here')
+  print(userID)
+  # createChatInstance(userID)
   data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').get()
-
   return render_template('index.html',data = data)
 
+@app.route('/login')
+def login():
+  return render_template('login.html')
+
+
+@app.route('/signup',methods = ['POST', 'GET'])
+def signup():
+    
+  return render_template('signup.html')
+
+@app.route('/login/submit',methods = ['POST', 'GET'])
+def loginCheck():
+  if request.method == 'POST':
+    username = request.form['username']
+    password = request.form['password']
+
+    if not (username and password):
+      flash('Empty input field', 'error')
+      return redirect(url_for('login'))
+    
+    result = db.collection("users").where(filter=FieldFilter("username", "==", username))
+    result = result.get()
+
+    if not result:
+      flash('User does not exist.', 'error')
+      return redirect(url_for('login'))
+
+    credential =[]
+    for doc in result:
+       credential = doc.to_dict()
+    
+    if credential['password'] != password:
+      flash('Incorrect Password', 'error')
+      return redirect(url_for('login'))
+  global userID
+  userID = credential['id']
+  return redirect(url_for('home'))
+  
+
+
+@app.route('/signup/submit',methods = ['POST', 'GET'])
+def signupSubmit():
+  if request.method == 'POST':
+    email = request.form['email']
+    username = request.form['username']
+    password = request.form['password']
+    passwordConfirm = request.form['passwordConfirm']
+
+
+    if not (email and username and password and passwordConfirm):
+      flash('Empty input field', 'error')
+      return redirect(url_for('signup'))
+    
+
+    result = db.collection('users').where('email','==',email)
+    result = result.get()
+
+
+    if result:
+      flash('Email already taken.', 'error')
+      return redirect(url_for('signup'))
+    
+    if password != passwordConfirm:
+      flash('Password does not Match.', 'error')
+      return redirect(url_for('signup'))
+    
+    insertUser = db.collection('users').document()
+    insertUser.set({
+       'email':email,
+       'username':username,
+       'password':password,
+       'id':insertUser.id
+    })
+    
+  return redirect(url_for('login'))
+
+@app.route('/')
+def landing():
+  return render_template('landing.html')
 
 # Get List of Chat rooms
 @app.route('/get',methods=['POST','GET'])
@@ -97,8 +180,6 @@ def createRoom():
     return json.dumps({'id':data.id})
 
 
-
-
 def get_AI_response(text,chatRoomID,chatRoomTitle):
     convo.send_message(text)
     responseText = convo.last.text
@@ -110,21 +191,18 @@ def get_AI_response(text,chatRoomID,chatRoomTitle):
     db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document().set(convoDetails)
     
     titleDef = 'New chat'
-    print(chatRoomTitle)
-    
-    print(text.strip(chatRoomTitle) ==  text.strip(titleDef))
-
-    print(''.join(responseText.split()[:2]))
     if text.strip(chatRoomTitle) == text.strip(titleDef):
         print('runthis')
         db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).update({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .'})
 
     return json.dumps({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .','response':responseText})
 
-def createChatInstance(userID):
-  db.collection('user_chat_instance').document(userID).set({'userID':userID})
 
-
+def setUpAi(query):
+  convo.send_message(query)
+  print(convo.last.text)
+  return convo.last.text
+  
   
 if __name__ == '__main__':
    app.run()

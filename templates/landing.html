@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai Medisina</title>
+
+    <!-- CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/styles.css') }}">
+    <script src="{{ url_for('static',filename='js/javascript.js') }}"></script>
+</head>
+
+<body class="">
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-expand-lg navbar-light  fixed-top" id="nav">
+        <div class="container pt-2">
+            <a href="#" class="navbar-brand ms-4 mt-2 ">
+                <div class="d-flex align-items-end">
+                    <h2 class="fs-3" style="font-weight: 550;"> <span style="color:#494949;">AI</span><span
+                            style="color:#9b9b9b;">-</span><span style="color:#0283a2;">Medisina</span> </h2>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse   mb-2 justify-content-end" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link   ms-4 me-4" aria-current="page" href="#">Home</a>
+                    <a class="nav-link  ms-4 me-4" href="#about">About</a>
+                    <a class="nav-link  ms-4 me-4" href="#contactus">Contact Us</a>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LAYOUTS -->
+    <div class=" l1 pb-md-5 pt-md-5">
+        <div class="container pb-5 mt-5 pt-5 ">
+            <div class="row ">
+                <div class="col-md-6">
+                    <div class=" d-flex  justify-content-center align-items-center h-100">
+                        <div class="container pt-5 ">
+                            <p class="m-0 p-0 h5 text-dark large-text" style="font-weight: 600;">Artificial Intelligence
+                            </p>
+
+                            <p class="mb-2 p-0 display-1 gradient-text" style="font-weight: 550;">Medisina</p>
+                            <span class="medium-text">Your healthcare buddy for your health query</span>
+                            <br>
+                            <a href="login.html"><button
+                                    class="mt-4 ps-5 pe-5 pt-2 pb-2 rounded-pill btn text-white bg-colorLightPrimary">
+                                    Login
+                                </button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6  align-items-center  d-flex">
+                    <img src="{{ url_for('static',filename='/img/main.svg') }}" class="w-100" alt="" srcset="">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="l2 bg-colorFadePrimary  pb-md-5 pt-md-5" id="about">
+        <div class="container pb-sm-5 pt-5">
+            <div class="row">
+                <div class="col-md-6  align-items-center  d-flex">
+                    <img src="{{ url_for('static',filename='/img/bg2.png')}}" class="w-100" alt="" srcset="">
+                </div>
+                <div class="col-md-6 align-items-center  d-flex">
+                    <div class="mb-5 p-md-5 p-3">
+                        <h1 class="mb-5 text-colorPrimaryLight">About</h1>
+                        <p class="text-dark">Lorem ipsum dolor sit amet. Eos quia quisquam aut alias consequatur eum
+                            reprehenderit ipsam in galisum autem. Qui animi Quis sed cupiditate suscipit ex placeat
+                            perferendis qui deleniti sint?Lorem ipsum dolor sit amet. Eos quia quisquam aut alias
+                            consequatur eum
+                            reprehenderit ipsam in galisum autem. Qui
+                            <br><br>
+                            Ut enim iste ex natus nemo est voluptas excepturi. Et quas eaque sit impedit facilis non
+                            quas cupiditate.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="l3  pb-md-5 pt-md-5" id="contactus">
+        <div class="container pb-5 pt-sm-5">
+            <div class="row">
+                <div class="col-md-6 align-items-center  d-flex">
+                    <div class="mb-5 p-md-5 p-3">
+                        <h1 class="mb-5 text-colorPrimaryLight">Contact Us</h1>
+                        <p class="text-dark">Lorem ipsum dolor sit amet. Eos quia quisquam aut alias consequatur eum
+                            reprehenderit ipsam in galisum autem. Qui animi Quis sed cupiditate suscipit ex placeat
+                            perferendis qui deleniti sint?
+
+                            <br><br>
+                        <div class="d-flex">
+                            <img src="{{ url_for('static',filename='/img/mail.svg') }}" width="30"
+                                alt="">&emsp;<span>aimedisina123@gmail.com</span>
+                        </div>
+                        <div class="d-fle mt-3">
+                            <img src="{{ url_for('static',filename='/img/fb.svg') }}" width="30"
+                                alt="">&emsp;<span>aimedisina123@gmail.com</span>
+                        </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6  align-items-center  d-flex">
+                    <img src="{{ url_for('static',filename='/img/contact.svg') }}" class="w-100" alt="" srcset="">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- FOOTER -->
+    <div class="footer bg-colorFadePrimary">
+        <div class="container  pt-5 ps-3 pe-3 pb-4">
+            <a href="#" class="text-decoration-none ms-sm-4 ms-2 ">
+                <span class="h3" style="font-weight: 550;"> <span style="color:#494949;">AI</span><span
+                        style="color:#9b9b9b;">-</span><span style="color:#0283a2;">Medisina</span> </span>
+            </a>
+
+            <div class="ms-sm-5 ms-4 mt-3 mb-4">
+                <div class="row">
+                    <div class="col-sm-6  navbar-nav ">
+                        <a class="foot-link " aria-current="page" href="#">Home</a>
+                        <a class="foot-link " href="#about">About</a>
+                        <a class="foot-link" href="#contactus">Contact Us</a>
+                    </div>
+                    <div class="col-sm-6 navbar-nav ">
+                        <a class="foot-link  " href="/login">Login</a>
+                        <a class="foot-link " href="/signup">Signup</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="p-3 text-center text-secondary small bg-colorFadeSecondary">
+            AI-Medisina © 2024 · All Rights reserved
+        </div>
+    </div>
+</body>
+
+</html>

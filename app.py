@@ -11,6 +11,8 @@ import json
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['SESSION_TYPE'] = 'filesystem'
+# Auto apply UI changes 
+app.config['TEMPLATES_AUTO_RELOAD'] = True 
 
 # For firebase 
 cred = credentials.Certificate("credentials.json")

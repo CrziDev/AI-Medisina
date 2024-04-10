@@ -117,9 +117,9 @@ def get_AI_response(text,chatRoomID,chatRoomTitle):
     print(''.join(responseText.split()[:2]))
     if text.strip(chatRoomTitle) == text.strip(titleDef):
         print('runthis')
-        db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).update({'title':' '.join(responseText.split()[:3])})
+        db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).update({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .'})
 
-    return json.dumps({'title':' '.join(responseText.split()[:3]),'response':responseText})
+    return json.dumps({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .','response':responseText})
 
 def createChatInstance(userID):
   db.collection('user_chat_instance').document(userID).set({'userID':userID})

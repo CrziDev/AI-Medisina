@@ -59,6 +59,7 @@ Notify the user that the question is not medical related"""
 @app.route('/')
 def home():
   # get_AI_response(setAI)
+  createChatInstance(userID)
   data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').get()
 
   return render_template('index.html',data = data)
@@ -68,8 +69,9 @@ def home():
 @app.route('/get',methods=['POST','GET'])
 def chat():
     sender = request.json['query']
+    chatRoomTitle= request.json['topicTitle']
     chatRoomID = request.json['chatRoomID']
-    return get_AI_response(sender,chatRoomID)
+    return get_AI_response(sender,chatRoomID,chatRoomTitle)
 
 # Get Specific chatroom convertsation
 @app.route('/get/topic',methods=['POST','GET'])
@@ -97,16 +99,27 @@ def createRoom():
 
 
 
-def get_AI_response(text,chatRoomID):
+def get_AI_response(text,chatRoomID,chatRoomTitle):
     convo.send_message(text)
     responseText = convo.last.text
     convoDetails = {
         'sender': text,
         'response': responseText,
     }
+
     db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document().set(convoDetails)
-    print(responseText)
-    return responseText
+    
+    titleDef = 'New chat'
+    print(chatRoomTitle)
+    
+    print(text.strip(chatRoomTitle) ==  text.strip(titleDef))
+
+    print(''.join(responseText.split()[:2]))
+    if text.strip(chatRoomTitle) == text.strip(titleDef):
+        print('runthis')
+        db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).update({'title':' '.join(responseText.split()[:3])})
+
+    return json.dumps({'title':' '.join(responseText.split()[:3]),'response':responseText})
 
 def createChatInstance(userID):
   db.collection('user_chat_instance').document(userID).set({'userID':userID})

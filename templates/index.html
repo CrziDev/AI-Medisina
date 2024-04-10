@@ -28,7 +28,7 @@
                     <div class="chat-history">
                         {% for data in data %}
                         <div class="chat-topic ">
-                            <p id="chat-topic" data-chatID="{{data.id}}">{{data.to_dict()['title']}} </p>
+                            <p class="chat-topic-content" data-chatID="{{data.id}}">{{data.to_dict()['title']}} </p>
                             <p class="history-dots">...</p>
                         </div>
                         {% endfor %}
@@ -75,6 +75,7 @@
     const senderBtn = document.querySelector('.sender-btn')
     const senderQuery = document.querySelector('#sender-query')
     const chatBox = document.querySelector('#chat-box-container')
+    let activeChatTitle = "New chat"
 
     let activeTopicID = ''
     let chatID = 0
@@ -109,18 +110,25 @@
         let response = responseContainer.firstChild;
         chatBox.appendChild(response);
 
+        console.log(activeChatTitle);
         axios.post('/get', {
             query: senderQuery.value,
-            chatRoomID: activeTopicID
+            chatRoomID: activeTopicID,
+            topicTitle: activeChatTitle
         }).then(function (data) {
+
+            console.log(data);
             chatID = chatID + 1
             senderQuery.value = ''
 
             chatContent = document.querySelector('#' + chatContent)
             chatContent.classList.remove('loader')
-            document.querySelector('.chat-active').innerHTML = formatTransmission(data.data).split(' ').slice(0, 5).join(' ');;
 
-            chatContent.innerHTML = formatTransmission(data.data)
+
+            if (activeChatTitle.trim() == 'New chat') {
+                document.querySelector('.chat-active').innerHTML = data.data['title']
+            }
+            chatContent.innerHTML = formatTransmission(data.data['response'])
         }).catch(function (error) {
             console.log(error);
         });
@@ -136,60 +144,10 @@
     let chatHistory = document.querySelector('.chat-history')
     let chatTopic = document.querySelectorAll('.chat-topic');
 
+    //Attach listener to all chatbox
     chatTopic.forEach(function (box) {
         box.addEventListener('click', function (element) {
-
-            let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
-            (messageBox != null) ? messageBox.style.display = 'none' : '';
-
-            chatTopic.forEach(function (e) {
-                e.classList.remove('chat-active')
-            })
-
-            element.target.classList.add('chat-active')
-            activeTopicID = element.target.querySelector('#chat-topic').getAttribute('data-chatID')
-
-            axios.post('/get/topic', {
-                chatRoomID: activeTopicID
-            }).then(function (response) {
-                let chatList = response.data
-
-                if (chatList.length !== 0) {
-                    chatBox.innerHTML = '';
-                    chatList.forEach(function (chat, index) {
-                        chatID = chatID + 1
-                        let senderContainer = document.createElement('div');
-                        senderContainer.innerHTML =
-                            '<div class="sender-promt chat-information">' +
-                            '<div class="sender-info chat-profile">' +
-                            '<div class="profile-pic"></div>' +
-                            '<h4>You</h4>' +
-                            '</div>' +
-                            '<div class="sender-text chat-content">' + chat['sender'] + '</div>' +
-                            '</div>';
-
-                        let sender = senderContainer.firstChild;
-                        chatBox.appendChild(sender);
-
-                        let responseContainer = document.createElement('div');
-                        responseContainer.innerHTML =
-                            '<div class="response-promt chat-information">' +
-                            '<div class="response-info chat-profile">' +
-                            '<div class="profile-pic"></div>' +
-                            '<h4>AI</h4>' +
-                            '</div>' +
-                            '<div class="response-text chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
-                            '</div>';
-
-                        let response = responseContainer.firstChild;
-
-                        chatBox.appendChild(response);
-
-                    })
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            selectChatActive(element)
         })
 
     })
@@ -202,6 +160,8 @@
 
 
         (messageBox != null) ? messageBox.style.display = 'block' : '';
+
+
         chatBox.innerHTML = ''
 
         chatTopic.forEach(function (e) {
@@ -211,21 +171,100 @@
         topicBoxContainer.classList.add('chat-active')
         topicBoxContainer.classList.add('chat-topic')
 
+
         //Attach ID
         axios.post('/create/chatroom', []).then(function (response) {
             //Assign Active Topic ID
             activeTopicID = response.data['id']
             topicBoxContainer.innerHTML = `
-                                        <p id="chat-topic" data-chatID="${response.data['id']}">New chat</p>
+                                        <p class="chat-topic-content" data-chatID="${response.data['id']}">New chat</p>
                                         <p class="history-dots">...</p>
+
+                                        
                                     `;
+
         }).catch(function (error) {
             console.log(error);
         });
 
         chatHistory.insertBefore(topicBoxContainer, chatHistory.firstChild);
 
+        chatTopic = document.querySelectorAll('.chat-topic');
+
+        chatTopic.forEach(function (box) {
+            box.addEventListener('click', function (element) {
+                selectChatActive(element)
+            });
+
+        })
+
+
+
+
     })
+
+
+
+    function selectChatActive(element) {
+        let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
+        (messageBox != null) ? messageBox.style.display = 'none' : '';
+
+        chatTopic.forEach(function (e) {
+            e.classList.remove('chat-active')
+        })
+
+        element.target.classList.add('chat-active')
+        activeTopicID = element.target.querySelector('.chat-topic-content').getAttribute('data-chatID')
+        activeChatTitle = document.querySelector('.chat-active .chat-topic-content').textContent
+        console.log(activeChatTitle);
+        axios.post('/get/topic', {
+            chatRoomID: activeTopicID
+        }).then(function (response) {
+            let chatList = response.data
+
+            if (chatList.length !== 0) {
+                chatBox.innerHTML = '';
+
+                chatList.forEach(function (chat, index) {
+                    chatID = chatID + 1
+                    let senderContainer = document.createElement('div');
+                    senderContainer.innerHTML =
+                        '<div class="sender-promt chat-information">' +
+                        '<div class="sender-info chat-profile">' +
+                        '<div class="profile-pic"></div>' +
+                        '<h4>You</h4>' +
+                        '</div>' +
+                        '<div class="sender-text chat-content">' + chat['sender'] + '</div>' +
+                        '</div>';
+
+                    let sender = senderContainer.firstChild;
+                    chatBox.appendChild(sender);
+
+                    let responseContainer = document.createElement('div');
+                    responseContainer.innerHTML =
+                        '<div class="response-promt chat-information">' +
+                        '<div class="response-info chat-profile">' +
+                        '<div class="profile-pic"></div>' +
+                        '<h4>AI</h4>' +
+                        '</div>' +
+                        '<div class="response-text chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
+                        '</div>';
+
+                    let response = responseContainer.firstChild;
+
+                    chatBox.appendChild(response);
+
+                })
+            } else {
+                chatBox.innerHTML = '';
+                let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
+                (messageBox != null) ? messageBox.style.display = 'block' : '';
+
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
 
 
 

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Medisina</title>
 
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -65,7 +64,8 @@
                                     <i class="bi bi-three-dots"></i>
                                 </div>
                                 <ul class="dropdown-menu  ">
-                                    <li><a class="dropdown-item small w-100" href="#">Delete</a></li>
+                                    <li><a class="dropdown-item small w-100" href="/chat/delete/{{data.id}}/">Delete</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -172,9 +172,24 @@
     let activeTopicID = ''
     let chatID = 0
 
-    senderBtn.addEventListener('click', function () {
-        document.querySelector('#welcome-message').style.display = 'none'
+    senderBtn.addEventListener('click', async function () {
+        if (activeTopicID == '') {
+            try {
+                await newChatGenerate();
+                queryAPI();
+            } catch (error) {
+                console.error("Error occurred:", error);
+            }
+        } else {
+            queryAPI();
+        }
+    });
 
+
+
+    function queryAPI() {
+        console.log(activeTopicID + 'sssssssssssssssss');
+        document.querySelector('#welcome-message').style.display = 'none'
         chatContent = "chatID" + chatID;
         let senderContainer = document.createElement('div');
         senderContainer.innerHTML =
@@ -202,13 +217,11 @@
         let response = responseContainer.firstChild;
         chatBox.appendChild(response);
 
-        console.log(activeChatTitle);
         axios.post('/get', {
             query: senderQuery.value,
             chatRoomID: activeTopicID,
             topicTitle: activeChatTitle
         }).then(function (data) {
-
             console.log(data);
             chatID = chatID + 1
             senderQuery.value = ''
@@ -236,14 +249,9 @@
         }).catch(function (error) {
             console.log(error);
         });
-
-    })
-
-
-
+    }
 
     //Side Panel Chats
-
     let newChatBtn = document.querySelector('.newchat-btn')
     let chatHistory = document.querySelector('.chat-history')
     let chatTopic = document.querySelectorAll('.chat-topic');
@@ -251,76 +259,71 @@
     //Attach listener to all chatbox
     chatTopic.forEach(function (box) {
         box.addEventListener('click', function (element) {
-            selectChatActive(element)
+            let selected = element.target
+            if (!(selected.classList.contains('chat-topic'))) {
+                selected = selected.closest('.chat-topic')
+            }
+
+            selectChatActive(selected)
         })
 
     })
 
 
     //Click new chat
-    newChatBtn.addEventListener('click', function (e) {
+    newChatBtn.addEventListener('click', newChatGenerate)
+
+
+    async function newChatGenerate() {
         let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
         let topicBoxContainer = document.createElement('div');
 
+        if (messageBox != null) {
+            messageBox.style.display = 'flex';
+        }
 
-        (messageBox != null) ? messageBox.style.display = 'block' : '';
-
-
-        chatBox.innerHTML = ''
+        chatBox.innerHTML = '';
 
         chatTopic.forEach(function (e) {
-            e.classList.remove('chat-active')
-        })
-
-        topicBoxContainer.classList.add('chat-active')
-        topicBoxContainer.classList.add('chat-topic')
-        topicBoxContainer.classList.add('d-flex')
-        topicBoxContainer.classList.add('p-0')
-
-
-
-
-        //Attach ID
-        axios.post('/create/chatroom', []).then(function (response) {
-            //Assign Active Topic ID
-            activeTopicID = response.data['id']
-            topicBoxContainer.innerHTML = `
-                                        
-
-                                        <div class="w-100  pt-2 pb-2 ps-2">
-                                <span class="chat-topic-content"
-                                data-chatID="${response.data['id']}">New chat</span>
-
-                            </div>
-                            <div class="pt-2 pb-2 text-center" style="width: 50px;">
-                                <i class="bi bi-three-dots"></i>
-                            </div>
-                                    `;
-
-
-        }).catch(function (error) {
-            console.log(error);
+            e.classList.remove('chat-active');
         });
 
-        chatHistory.insertBefore(topicBoxContainer, chatHistory.firstChild);
+        topicBoxContainer.classList.add('chat-active');
+        topicBoxContainer.classList.add('chat-topic');
+        topicBoxContainer.classList.add('d-flex');
+        topicBoxContainer.classList.add('p-0');
 
+        try {
+            const response = await axios.post('/create/chatroom', []);
+            activeTopicID = response.data['id'];
+            console.log(activeTopicID);
+            topicBoxContainer.innerHTML = `
+            <div class="w-100 pt-2 pb-2 ps-2">
+                <span class="chat-topic-content" data-chatID="${response.data['id']}">New chat</span>
+            </div>
+            <div class="pt-2 pb-2 text-center" style="width: 50px;">
+                <i class="bi bi-three-dots"></i>
+            </div>
+        `;
+            chatHistory.insertBefore(topicBoxContainer, chatHistory.firstChild);
 
-        chatTopic.forEach(function (box) {
-            box.addEventListener('click', function (element) {
-                let targetElement = event.target.closest('.chat-topic');
-                if (targetElement) {
-                    selectChatActive(targetElement);
-                }
+            chatTopic = document.querySelectorAll('.chat-topic');
+            chatTopic.forEach(function (box) {
+                box.addEventListener('click', function (element) {
+                    let selected = element.target
+                    if (!(selected.classList.contains('chat-topic'))) {
+                        selected = selected.closest('.chat-topic')
+                    }
+
+                    selectChatActive(selected)
+                })
             });
 
-        })
-
-
-
-
-    })
-
-
+        } catch (error) {
+            console.log(error);
+            throw error; // Rethrow the error
+        }
+    }
 
     function selectChatActive(element) {
         let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
@@ -330,10 +333,10 @@
             e.classList.remove('chat-active')
         })
 
-        element.target.classList.add('chat-active')
-        activeTopicID = element.target.querySelector('.chat-topic-content').getAttribute('data-chatID')
+        element.classList.add('chat-active')
+        activeTopicID = element.querySelector('.chat-topic-content').getAttribute('data-chatID')
         activeChatTitle = document.querySelector('.chat-active .chat-topic-content').textContent
-        console.log(activeChatTitle);
+
         axios.post('/get/topic', {
             chatRoomID: activeTopicID
         }).then(function (response) {
@@ -375,15 +378,13 @@
             } else {
                 chatBox.innerHTML = '';
                 let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
-                (messageBox != null) ? messageBox.style.display = 'block' : '';
+                (messageBox != null) ? messageBox.style.display = 'flex' : '';
 
             }
         }).catch(function (error) {
             console.log(error);
         });
     }
-
-
 
 
 

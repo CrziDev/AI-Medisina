@@ -1,12 +1,12 @@
-from flask import Flask, render_template,request,flash,redirect ,url_for
+from flask import Flask, render_template,request,flash,redirect ,url_for, session
 import os
 import google.generativeai as genai
 import firebase_admin 
+import json
 from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
-import re
-import json
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -55,8 +55,7 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
 convo = model.start_chat(history=[
 ])
 
-
-userID = ''
+userID =  ''
 setAI = """ Only asnwer if the question is related to medical,
 If the question is not medical-related tell the user that the question is not medical related 
 and respond I'm sorry, but I'm not able to answer your question. It does not appear to be medical-related"""
@@ -81,8 +80,12 @@ def signup():
 @app.route('/homepage')
 def home():
   setUpAi(setAI)
-  data = db.collection('user_chat_instance').document(userID).collection('chat_rooms').get()
-  return render_template('index.html',data = data)
+  doc_ref = db.collection('user_chat_instance').document(session['userID']).collection('chat_rooms')
+  data = doc_ref.get()
+  if not data:
+      return render_template('index.html',data = {})
+  else:
+    return render_template('index.html',data = data)
 
 # Login Submit post 
 @app.route('/login/submit',methods = ['POST', 'GET'])
@@ -102,15 +105,18 @@ def loginCheck():
       flash('User does not exist.', 'error')
       return redirect(url_for('login'))
 
-    credential =[]
+    credential = []
     for doc in result:
        credential = doc.to_dict()
     
     if credential['password'] != password:
       flash('Incorrect Password', 'error')
       return redirect(url_for('login'))
-  global userID
-  userID = credential['id']
+    
+  session['userID'] = credential['id']
+  global userID 
+  userID = session['userID']
+
   return redirect(url_for('home'))
   
 
@@ -149,6 +155,7 @@ def signupSubmit():
        'id':insertUser.id
     })
     
+    
   return redirect(url_for('login'))
 
 # Get List of Chat rooms
@@ -182,6 +189,15 @@ def createRoom():
     print(data.id)
     return json.dumps({'id':data.id})
 
+# Remove chat 
+@app.route('/chat/delete/<chatRoomID>/', methods=['GET','POST'])
+def delete(chatRoomID):
+    chatRoom = db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID)
+    chatRoom.delete() 
+ 
+    return redirect(url_for('home'))
+
+
 
 def get_AI_response(text,chatRoomID,chatRoomTitle):
     convo.send_message(text)
@@ -192,7 +208,8 @@ def get_AI_response(text,chatRoomID,chatRoomTitle):
     }
 
     db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document().set(convoDetails)
-    
+    print('runthis')
+    print(chatRoomID)
     titleDef = 'New chat'
     if text.strip(chatRoomTitle) == text.strip(titleDef):
         print('runthis')
@@ -205,6 +222,8 @@ def setUpAi(query):
   convo.send_message(query)
   print(convo.last.text)
   return convo.last.text
+
+
   
   
 if __name__ == '__main__':

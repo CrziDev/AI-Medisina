@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,flash,redirect ,url_for, session
+from flask import Flask, render_template,request,flash,redirect ,url_for, session ,make_response
 import os
 import google.generativeai as genai
 import firebase_admin 
@@ -79,9 +79,14 @@ def signup():
 # Homepage 
 @app.route('/homepage')
 def home():
+  if session.get('userID') is None:
+    return redirect(url_for('login'))
+  
+  print(session['userID'])
   setUpAi(setAI)
   doc_ref = db.collection('user_chat_instance').document(session['userID']).collection('chat_rooms')
   data = doc_ref.get()
+
   if not data:
       return render_template('index.html',data = {})
   else:
@@ -118,6 +123,13 @@ def loginCheck():
   userID = session['userID']
 
   return redirect(url_for('home'))
+
+
+# logout 
+@app.route('/logout')
+def logout():
+    session.pop('userID', None)
+    return redirect(url_for('login'))
   
 
 # Signup submit Post 
@@ -189,7 +201,10 @@ def createRoom():
     print(data.id)
     return json.dumps({'id':data.id})
 
-# Remove chat 
+
+
+
+# Delete Chat Room
 @app.route('/chat/delete/<chatRoomID>/', methods=['GET','POST'])
 def delete(chatRoomID):
     chatRoom = db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID)
@@ -198,7 +213,7 @@ def delete(chatRoomID):
     return redirect(url_for('home'))
 
 
-
+# Query Model 
 def get_AI_response(text,chatRoomID,chatRoomTitle):
     convo.send_message(text)
     responseText = convo.last.text
@@ -223,8 +238,10 @@ def setUpAi(query):
   print(convo.last.text)
   return convo.last.text
 
-
-  
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
   
 if __name__ == '__main__':
    app.run()

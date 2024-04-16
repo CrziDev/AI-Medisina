@@ -50,8 +50,15 @@
                             <input type="text" class="form-control  mb-3 pt-2 pb-2" name="username"
                                 placeholder="username">
 
-                            <input type="password" class="form-control mb-3 pt-2 pb-2" name="password"
-                                placeholder="password">
+                            <input id="passwordInput" type="password" class="form-control mb-3 pt-2 pb-2"
+                                name="password" placeholder="password">
+
+                            <div class="d-flex align-items-center justify-content-end">
+                                <input style="margin-right: 5px;margin-bottom: 2px;" type="checkbox"
+                                    onclick="myFunction()">
+                                <p class="m-0">Show Password</p>
+                            </div>
+
 
                             <hr class="border ">
                             <input type="submit"
@@ -70,3 +77,15 @@
 </body>
 
 </html>
+
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("passwordInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

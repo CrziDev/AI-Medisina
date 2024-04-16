@@ -51,12 +51,12 @@ body {
 }
 
 .side-panel-wrapper {
-    height: 100%;
+    height: 90vh;
     width: 100%;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    padding-bottom: 20px;
+    
 }
 
 /* Close panel button  */
@@ -79,6 +79,23 @@ body {
 
 }
 
+.scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 10rem;
+    border: 0px solid #fff;
+  }
+
+
+  .scroll::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+  }
+
+  .scroll::-webkit-scrollbar-track-piece:end {
+    background: transparent;
+  }
 /* .chat-history div, */
 /* .new-chat {
     display: flex;
@@ -104,7 +121,6 @@ body {
 
 /* History Box  */
 .chat-history div {
-    padding: 4px 15px;
     border-radius: 20px;
 }
 
@@ -222,6 +238,14 @@ body {
     height: 50px;
 
 }
+
+.chat-topic:hover ,.item:hover{
+    background-color: #c2cfd4;
+    border-radius: 100px;
+
+    color: #222;
+}
+
 
 .sender-input-field input {
     border: none;

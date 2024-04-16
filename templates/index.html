@@ -38,10 +38,10 @@
                 <button class="btn ms-1 me-2 " type="button" onclick="toggleNav()"><i
                         class="bi h5 bi-x-lg"></i></button>
             </div>
-            <div class="side-panel-wrapper pe-3 ps-3">
-                <div clss="recent-chat-wrapper">
+            <div class="side-panel-wrapper  pe-3 ps-3 ">
+                <div class="recent-chat-wrapper ">
 
-                    <div class="d-flex align-items-center w-100">
+                    <div class="d-flex p-0 align-items-center ">
 
                         <div class="w-100">
                             <span class="item-list">Recents</span>
@@ -50,7 +50,8 @@
                             <i class="bi bi-plus-lg"></i>
                         </div>
                     </div>
-                    <div class="chat-history d-flex  w-100 flex-column small ">
+                    <div class="chat-history d-flex scroll  w-100 flex-column small  overflow-auto"
+                        style="height: 70vh;">
                         {% for data in data %}
 
                         <div class="chat-topic d-flex   p-0">
@@ -70,14 +71,19 @@
                             </div>
                         </div>
                         {% endfor %}
+
                     </div>
                 </div>
-                <div class="navigation-item">
-                    <p class="item-list">Help </p>
-                    <p class="item-list">Settings </p>
+                <div class="sidebar-item small">
+                    <p class="item m-0 p-2" onclick="show('help')"><i class="bi bi-question-circle-fill me-3"></i>Help
+                    </p>
+                    <p class="item m-0 p-2" onclick="show('settings')"><i class="bi bi-gear-fill me-3"></i>Settings</p>
+
                 </div>
             </div>
+
         </div>
+
         <div class="sidebar text-dark collapse">
 
 
@@ -86,7 +92,7 @@
             </div>
         </div>
 
-        <div id="main" class="w-100" style="height: 100vg;">
+        <div id="main" class="w-100" style="height: 100vh;">
             <nav class="navbar  navbar-expand-md navbar-light fw-bold sticky-top   " id="nav">
                 <div class="container-fluid">
                     <div class="d-flex w-100 align-items-center ">
@@ -120,15 +126,16 @@
                 </div>
             </nav>
 
+            <!-- Content -->
 
-
-            <div class="con d-flex flex-column   justify-content-center ">
-                <div class="overflow-auto d-flex  justify-content-center align-items-top" style="height: 90vh;">
+            <div class="con d-flex flex-column  justify-content-center " id="chat">
+                <div class="overflow-auto scroll d-flex  justify-content-center align-items-top" id="chat-scroll"
+                    style="height: 90vh;">
                     <div class="col-sm-8 ">
-                        <!-- Content -->
+
                         <div class="chat-section  p-2">
                             <div class="chat-box-wrapper ">
-                                <div id="welcome-message" style="height: 90vh;">
+                                <div id="welcome-message" style="height: 80vh;">
                                     <p class=" h2">Hi there👋 how can I help you?</p>
                                     <span class="small"></span>
                                 </div>
@@ -143,7 +150,7 @@
                     </div>
                     <div class="bottom-aligned w-100 d-flex justify-content-center pb-sm-4 pb-2">
                         <div class="sender-input-field shadow-sm bg-light border rounded-pill d-flex col-sm-6 col-11">
-                            <input type="text" name="query" id="sender-query" value="">
+                            <input type="text" name="query" id="sender-query" placeholder="Type here..." value="">
                             <button class="btn sender-btn  rounded-pill"><img
                                     src="{{ url_for('static',filename='/img/send.svg') }}" alt=""></button>
                         </div>
@@ -153,7 +160,94 @@
             </div>
 
 
+            <div class="con d-flex flex-column d-none  justify-content-center " id="help">
+                <div class="overflow-auto d-flex  justify-content-center align-items-top " style="height: 90vh;">
+                    <div class="row  justify-content-center " style="height: 90vh;width: 100%;">
 
+                        <div class="col-sm-8">
+                            <p class=" h2 "><span class="item ps-3 pe-3 me-3 small" onclick="show('chat')"><i
+                                        class="bi bi-arrow-left"></i></span>Help</p>
+
+                            <div class="border rounded bg-white mt-4 p-4">
+                                <p class="text-dark">Lorem ipsum dolor sit amet. Eos quia quisquam aut alias
+                                    consequatur eum
+                                    reprehenderit ipsam in galisum autem. Qui animi Quis sed cupiditate suscipit
+                                    ex placeat
+                                    perferendis qui deleniti sint?
+                                </p>
+                                <br>
+                                <div class="d-flex">
+                                    <img src="{{ url_for('static',filename='/img/mail.svg') }}" width="30"
+                                        alt="">&emsp;<span>aimedisina123@gmail.com</span>
+                                </div>
+                                <div class="d-fle mt-3">
+                                    <img src="{{ url_for('static',filename='/img/fb.svg') }}" width="30"
+                                        alt="">&emsp;<span>aimedisina123@gmail.com</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="con d-flex flex-column d-none  justify-content-center " id="settings">
+                <div class="overflow-auto d-flex  justify-content-center align-items-top " style="height: 90vh;">
+                    <div class="row  justify-content-center " style="height: 90vh;width: 100%;">
+
+                        <div class="col-sm-8">
+                            <p class="h2  ">
+                                <span class="item ps-3 pe-3 me-3 small" onclick="show('chat')"><i
+                                        class="bi bi-arrow-left"></i></span>Settings
+                            </p>
+                            <p class="small h5 mt-4">Option</p>
+                            <div class="border rounded bg-white  p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="w-100">
+                                        <span>Dark Mode</span>
+                                    </div>
+
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <p class="small h5 mt-4">Account Settings</p>
+                            <div class="border rounded bg-white  p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="w-100">
+                                        <span>Password</span>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-danger mt-2 small">Change</button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- <div class="con d-flex flex-column d-none justify-content-center " id="settings">
+                <div class="overflow-auto d-flex  justify-content-center align-items-top" style="height: 90vh;">
+                    <div class="col-sm-8 ">
+
+                        <div class="chat-section  p-2">
+                            <div class="chat-box-wrapper ">
+                                <div id="" style="height: 90vh;">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> -->
             <!-- Main Section -->
 
         </div>
@@ -164,6 +258,35 @@
 
 
 <script>
+    window.onload = function () {
+        // Parse the URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var pageName = urlParams.get('content');
+
+        // Show the div based on the content parameter
+        if (pageName) {
+            show(pageName);
+        }
+    }
+    function show(pageName) {
+        // Hide all divs
+        var divs = document.getElementsByClassName("con");
+        for (var i = 0; i < divs.length; i++) {
+            divs[i].classList.add('d-none');
+        }
+
+        // Show the selected div based on page name
+        var divToShow = document.getElementById(pageName);
+        if (divToShow) {
+            divToShow.classList.remove('d-none');
+
+            // Update the URL without reloading the page
+            var url = window.location.protocol + "//" + window.location.host + window.location.pathname + "?content=" + pageName;
+            window.history.pushState({ path: url }, '', url);
+        } else {
+            console.error("Div with id " + pageName + " not found.");
+        }
+    }
     const senderBtn = document.querySelector('.sender-btn')
     const senderQuery = document.querySelector('#sender-query')
     const chatBox = document.querySelector('#chat-box-container')
@@ -172,7 +295,19 @@
     let activeTopicID = ''
     let chatID = 0
 
+
+    senderQuery.addEventListener("keydown", async function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent default form submission behavior
+            sendFn();
+        }
+    });
     senderBtn.addEventListener('click', async function () {
+        sendFn();
+    });
+
+    async function sendFn() {
+
         if (activeTopicID == '') {
             try {
                 await newChatGenerate();
@@ -183,7 +318,10 @@
         } else {
             queryAPI();
         }
-    });
+        senderQuery.value = "";
+        var scrollableDiv = document.getElementById("chat-scroll");
+        scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+    }
 
 
 
@@ -191,6 +329,7 @@
         console.log(activeTopicID + 'sssssssssssssssss');
         document.querySelector('#welcome-message').style.display = 'none'
         chatContent = "chatID" + chatID;
+
         let senderContainer = document.createElement('div');
         senderContainer.innerHTML =
             '<div class="sender-promt chat-information">' +
@@ -214,6 +353,7 @@
             '<div class="response-text chat-content"><div id="' + chatContent + '" class="loader"> <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span><div></div>' +
             '</div>';
 
+
         let response = responseContainer.firstChild;
         chatBox.appendChild(response);
 
@@ -235,20 +375,58 @@
                 newChatBox.classList.add('d-flex')
                 newChatBox.classList.add('p-0')
                 newChatBox.innerHTML = '' +
-                    '<div class="w-100  pt-2 pb-2 ps-2">' +
-                    '   <span class="chat-topic-content"' +
-                    '        data-chatID="{{data.id}}">' + data.data['title'] +
-                    '   </span>' +
+                    '<div class="w-100  pt-2 pb-2 ps-2"> ' +
+                    '<span class="chat-topic-content"  data-chatID="{{data.id}}">' + data.data['title'] + '</span>' +
                     '</div>' +
-                    '    <div class="pt-2 pb-2 text-center" style="width: 50px;">' +
-                    '        <i class="bi bi-three-dots"></i>' +
-                    '    </div>'
-
+                    '<div class="dropdown p-0">' +
+                    '    <div class="pt-2 pb-2  text-center" data-bs-toggle="dropdown" style="width: 50px;">' +
+                    '       <i class="bi bi-three-dots"></i>' +
+                    '   </div>' +
+                    '   <ul class="dropdown-menu  ">' +
+                    '    <li>' +
+                    '       <a class="dropdown-item small w-100" href="/chat/delete/{{data.id}}/">Delete</a>' +
+                    '    </li>' +
+                    '   </ul>' +
+                    '</div>'
             }
-            chatContent.innerHTML = formatTransmission(data.data['response'])
+
+            // Function to simulate typing animation
+            function typeWriter(text, i, fnCallback) {
+                if (i < (text.length)) {
+                    // Adding a character at a time
+                    chatContent.innerHTML = formatTransmission(text.substring(0, i + 1)) + '<span aria-hidden="true"></span>';
+                    // Wait for a while before calling this function again
+                    setTimeout(function () {
+                        typeWriter(text, i + 1, fnCallback)
+                        var scrollableDiv = document.getElementById("chat-scroll");
+                        scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+                    }, 5);
+                } else if (typeof fnCallback == 'function') {
+                    // After the text has been typed, call the callback if provided
+                    setTimeout(fnCallback, 700);
+                }
+            }
+
+            // Start the typing animation for the response
+            function startTextAnimation(i) {
+                if (typeof data.data['response'] === 'undefined' || i >= data.data['response'].length) {
+                    // If response is undefined or end of response is reached, return
+                    return;
+                }
+
+                // Typing animation
+                typeWriter(data.data['response'], 0, function () {
+                    // Callback after typing animation finishes
+                });
+            }
+
+            // Start typing animation
+            startTextAnimation(0);
+
         }).catch(function (error) {
             console.log(error);
         });
+
     }
 
     //Side Panel Chats
@@ -263,6 +441,7 @@
             if (!(selected.classList.contains('chat-topic'))) {
                 selected = selected.closest('.chat-topic')
             }
+            show('chat');
 
             selectChatActive(selected)
         })
@@ -275,6 +454,7 @@
 
 
     async function newChatGenerate() {
+        show('chat');
         let messageBox = document.querySelector('#welcome-message') ? document.querySelector('#welcome-message') : null;
         let topicBoxContainer = document.createElement('div');
 

@@ -25,23 +25,7 @@
 
     transition: margin-left 0.2s ease;
 }
-.sidebar::-webkit-scrollbar {
-    width: 7px;
-  }
-  .sidebar::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.4);
-    border-radius: 10rem;
-    border: 1px solid #fff;
-  }
 
-
-  .sidebar::-webkit-scrollbar-track-piece:start {
-    background: transparent;
-  }
-
-  .sidebar::-webkit-scrollbar-track-piece:end {
-    background: transparent;
-  }
  
 .sidebar div {
     padding-top: 15px;
@@ -58,7 +42,7 @@
     
 
 }
-
+/* 
 .sidebar a {
     padding: 8px 8px 8px 15px;
     margin-top: 2px;
@@ -80,7 +64,7 @@
     color: #fff;
     display: block;
     /* transition: 0.2s; */
-}
+/* } */ */
 
 .sidebar a.selected {
 

@@ -7,6 +7,12 @@
     --color-grey: #F2F3F7;
     --color-red: #B20404;
     --color-yellow: #D99E2C;
+
+    --bg-color: #0b344f;
+    --bg-gray: #c5c5c5;
+    --bg-colorLight: #076d8f;
+    --bg-colorFade: #eff8fb;
+    --bg-colorFadeSecondary: #eaf3f5;
 }
 .sidebar {
     height: 100%;
@@ -15,7 +21,7 @@
     /* Set a lower z-index for the sidebar */
     top: 0;
     width: 250px;
-    background-color: var(--color-primary);
+    background-color: var(--bg-colorFade);
     
     border: 1px solid transparent;
     border-left: 0px;

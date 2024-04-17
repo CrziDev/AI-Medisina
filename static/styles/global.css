@@ -9,6 +9,13 @@
     --color-grey: #F2F3F7;
     --color-red: #B20404;
     --color-yellow: #D99E2C;
+
+    
+    --bg-color: #0b344f;
+    --bg-gray: #c5c5c5;
+    --bg-colorLight: #076d8f;
+    --bg-colorFade: #eff8fb;
+    --bg-colorFadeSecondary: #eaf3f5;
 }
 
 
@@ -66,8 +73,8 @@ body {
 
 }
 .toggle{
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
 
 }
 
@@ -125,7 +132,7 @@ body {
 }
 
 .chat-active {
-    background-color: #3dc1c5;
+    background-color:#0283a2;
     border-radius: 100px;
 
     color: white;
@@ -154,7 +161,7 @@ body {
 }
 
 .content-box {
-    padding-bottom: 60px;
+    padding-bottom: 80px;
 }
 
 .content-section {
@@ -204,7 +211,9 @@ body {
     flex-direction: column;
 }
 
-
+.rounded{
+    border-radius: 20px !important;
+}
 .chat-information {
     margin-bottom: 20px;
     padding: 20px;
@@ -212,7 +221,7 @@ body {
 }
 
 .response-promt {
-    background-color: var(--color-primary);
+    background-color: var(--bg-colorFade);
 }
 
 .chat-profile {

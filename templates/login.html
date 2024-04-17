@@ -50,14 +50,15 @@
                             <input type="text" class="form-control  mb-3 pt-2 pb-2" name="username"
                                 placeholder="username">
 
-                            <input id="passwordInput" type="password" class="form-control mb-3 pt-2 pb-2"
-                                name="password" placeholder="password">
-
-                            <div class="d-flex align-items-center justify-content-end">
-                                <input style="margin-right: 5px;margin-bottom: 2px;" type="checkbox"
-                                    onclick="myFunction()">
-                                <p class="m-0">Show Password</p>
+                            
+                            <div class="d-flex align-items-center " style="margin-top:15px">
+                                <input id="passwordInput" type="password"
+                                    class="show-hide-password form-control  pt-2 pb-2" name="password"
+                                    placeholder="password">
+                                <span class="fas fa-eye-slash " id="togglePassword" style="margin-left:-35px"></span>
                             </div>
+
+                            
 
 
                             <hr class="border ">
@@ -80,12 +81,25 @@
 
 
 <script>
-    function myFunction() {
-        var x = document.getElementById("passwordInput");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
-    }
+    $(document).ready(function () {
+        $('#togglePassword').click(function () {
+            const eyeIcon = $(this);
+            const pwdInput = $('.show-hide-password');
+
+            pwdInput.off('blur');
+
+            if (eyeIcon.hasClass('fa-eye')) {
+                eyeIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                pwdInput.attr('type', 'password').focus();
+
+
+            } else {
+                eyeIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                pwdInput.attr('type', 'text').focus();
+
+
+            }
+        });
+    })
+    
 </script>

@@ -32,18 +32,15 @@ a {
 /* Animation */
 
 .loader {
-    font-size: 50px;
-    text-align: left;
-    display: flex;
-    justify-content: center;
-    margin-right: 50px;
+    font-size: 20px;
+    
+    margin-right: 10px;
 }
 
 .dot-1,
 .dot-2,
 .dot-3 {
     display: inline-block;
-    margin: 0 5px;
     opacity: 0;
     animation: dot-animation 1.5s infinite;
 }

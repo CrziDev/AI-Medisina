@@ -84,14 +84,18 @@ def home():
     return redirect(url_for('login'))
   
   print(session['userID'])
-  setUpAi(setAI)
+  # setUpAi(setAI)
   doc_ref = db.collection('user_chat_instance').document(session['userID']).collection('chat_rooms')
   data = doc_ref.get()
 
+  user = db.collection('users').document(session['userID'])
+  profile = user.get()
+
+  print(user)
   if not data:
-      return render_template('index.html',data = {})
+      return render_template('index.html',data = {},profile = profile)
   else:
-    return render_template('index.html',data = data)
+    return render_template('index.html',data = data, profile=profile)
 
 # Login Submit post 
 @app.route('/login/submit',methods = ['POST', 'GET'])
@@ -131,6 +135,15 @@ def loginCheck():
 def logout():
     session.pop('userID', None)
     return redirect(url_for('login'))
+
+# logout 
+@app.route('/changepassword',methods = ['POST', 'GET'])
+def changepassword():
+  newpassword = request.json['password']
+  db.collection('users').document(userID).update({'password':newpassword})
+
+  return json.dumps({'newPassword':newpassword})
+  
   
 
 # Signup submit Post 
@@ -223,15 +236,29 @@ def get_AI_response(text,chatRoomID,chatRoomTitle):
         'response': responseText,
     }
 
-    db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document().set(convoDetails)
-    print('runthis')
-    print(chatRoomID)
+    result = db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document()
+    result.set(convoDetails)
     titleDef = 'New chat'
     if text.strip(chatRoomTitle) == text.strip(titleDef):
         print('runthis')
         db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).update({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .'})
 
-    return json.dumps({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .','response':responseText})
+    return json.dumps({'title':(' '.join(responseText.split()[:3])).replace("*","") + ' . . . .','response':responseText,'messageId':result.id})
+
+@app.route('/regenerateResponse',methods=['POST','GET'])
+def regenerateResponse():
+    sender = 'Regenerate your last reponse'
+    messageResponseID = request.json['messageResponseID']
+    chatRoomID = request.json['chatRoomID']
+
+    convo.send_message(sender)
+    responseText = convo.last.text
+
+    db.collection('user_chat_instance').document(userID).collection('chat_rooms').document(chatRoomID).collection('messages').document(messageResponseID).update({'reponse':responseText})
+
+
+    return json.dumps({'response':responseText,})
+
 
 
 def setUpAi(query):

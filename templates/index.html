@@ -26,6 +26,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/sidebar-styles.css') }}">
     <script src="{{ url_for('static',filename='js/sidebar.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </head>
@@ -151,6 +152,32 @@
 
                                 <div class="box">
                                     <div id="chat-box-container" class="content-box">
+                                        <!-- <div class="sender-promt chat-information ">
+                                            <div class="sender-info chat-profile">
+                                                <div class="border  rounded-circle d-flex align-items-center justify-content-center"
+                                                    style="width: 30px; height: 30px;"><img class="rounded-circle"
+                                                        src="/static//img/user.png" width="20px" alt="" srcset=""></div>
+                                                <p class="ms-3 h5 pt-2">You</p>
+                                            </div>
+                                            <div class="sender-text   chat-content">hi</div>
+                                        </div> -->
+                                        <!-- <div class="response-promt chat-information  ms-2 me-2">
+                                            <div class="response-info chat-profile  ">
+                                                <div class="border   rounded-circle d-flex align-items-center justify-content-center"
+                                                    style="width: 30px; height: 30px;"><img src="/static//img/logo.png"
+                                                        width="25px" alt="" srcset=""></div>
+                                                <p class="ms-3 h5 pt-2">AI-Medisina </p>
+                                            </div>
+                                            <div class="response-text  chat-content">
+                                                <div id="chatID0" class="">
+                                                    <p> Hello! How can I assist you today?</p> <span
+                                                        aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div id="reloadReponse" class="d-flex justify-content-end"><i
+                                                    class="bi bi-arrow-clockwise" onclick="reloadReponse()"></i></div>
+
+                                        </div> -->
 
                                     </div>
                                 </div>
@@ -235,17 +262,18 @@
                                 </div>
 
                             </div>
-                            <p class="small h5 mt-4">Account Settings</p>
+                            <p class="small h5 mt-4">Account Password</p>
                             <div class="border rounded bg-white  p-4">
                                 <div class="d-flex align-items-center">
                                     <div class="w-100">
-                                        <span>Password</span>
+
+                                        <span id="userpasswordText">{{profile.to_dict()['password']}}</span>
+
                                     </div>
                                     <div>
-                                        <button class="btn btn-danger mt-2 small">Change</button>
+                                        <button class="btn btn-danger mt-2 small"
+                                            onClick="passwordChange()">Change</button>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -260,7 +288,7 @@
 </body>
 
 </html>
-
+<script src="{{ url_for('static',filename='js/sweetalert.js') }}"></script>
 
 <script>
     window.onload = function () {
@@ -330,15 +358,67 @@
     }
 
 
+    function reloadReponse() {
+        chatContent = "chatID" + (chatID - 1);
+        chatContent = document.querySelector('#' + chatContent)
+        messageID = chatContent.getAttribute('data-response-id')
+
+        chatContent.classList.add('loader')
+        chatContent.innerHTML = '<span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span>';
+        axios.post('/regenerateResponse', {
+            chatRoomID: activeTopicID,
+            messageResponseID: messageID,
+        }).then(function (data) {
+            console.log(data);
+
+
+            // Function to simulate typing animation
+            function typeWriter(text, i, fnCallback) {
+                if (i < (text.length)) {
+                    // Adding a character at a time
+                    chatContent.innerHTML = formatTransmission(text.substring(0, i + 1)) + '<span aria-hidden="true"></span>';
+                    // Wait for a while before calling this function again
+                    setTimeout(function () {
+                        typeWriter(text, i + 1, fnCallback)
+                        var scrollableDiv = document.getElementById("chat-scroll");
+                        scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+                    }, 3);
+                } else if (typeof fnCallback == 'function') {
+                    setTimeout(fnCallback, 700);
+                }
+            }
+
+            // Start the typing animation for the response
+            function startTextAnimation(i) {
+                if (typeof data.data['response'] === 'undefined' || i >= data.data['response'].length) {
+                    return;
+                }
+
+                // Typing animation
+                typeWriter(data.data['response'], 0, function () {
+                    // Callback after typing animation finishes
+                });
+            }
+
+            // Start typing animation
+            startTextAnimation(0);
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
 
     function queryAPI() {
-        console.log(activeTopicID + 'sssssssssssssssss');
         document.querySelector('#welcome-message').style.display = 'none'
+        if (chatID != 0) {
+            document.querySelector("#reloadReponse").outerHTML = "";
+        }
         chatContent = "chatID" + chatID;
 
         let senderContainer = document.createElement('div');
         senderContainer.innerHTML =
-            '<div class="sender-promt chat-information " style="width: 95vw;">' +
+            '<div class="sender-promt chat-information ">' +
             '<div class="sender-info chat-profile">' +
             '<div class="border  rounded-circle d-flex align-items-center justify-content-center"' +
             'style="width: 30px; height: 30px;">' +
@@ -353,9 +433,10 @@
         let sender = senderContainer.firstChild;
         chatBox.appendChild(sender);
 
+
         let responseContainer = document.createElement('div');
         responseContainer.innerHTML =
-            '<div class="response-promt chat-information  ms-2 me-2" style="width: 95vw;">' +
+            '<div class="response-promt chat-information  ms-2 me-2" >' +
             '<div class="response-info chat-profile  ">' +
             '<div class="border   rounded-circle d-flex align-items-center justify-content-center"' +
             'style="width: 30px; height: 30px;">' +
@@ -364,8 +445,9 @@
             '</div>' +
             '<p class="ms-3 h5 pt-2">AI-Medisina </p>' +
             '</div>' +
-            '<div class="response-text    chat-content"><div id="' + chatContent + '" class="loader" > <span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span><div></div>' +
-            '</div>';
+            '<div class="response-text  chat-content"><div id="' + chatContent + '" class="loader" > <span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span><div></div>' +
+            '</div>' +
+            '<div id="reloadReponse" class="d-flex justify-content-end"><i class="bi bi-arrow-clockwise" onclick="reloadReponse()"></i></div>';
 
 
         let response = responseContainer.firstChild;
@@ -403,6 +485,9 @@
                     '   </ul>' +
                     '</div>'
             }
+
+            chatContent.setAttribute('data-response-id', data.data['messageId'])
+
 
             // Function to simulate typing animation
             function typeWriter(text, i, fnCallback) {
@@ -517,7 +602,7 @@
     }
 
 
-    function sidebarItemClick(){
+    function sidebarItemClick() {
         if (window.innerWidth >= 867) {
             if (!largeScreen) {
                 openNav();
@@ -582,7 +667,8 @@
                         '<p class="ms-3 h5 pt-2">AI-Medisina</p>' +
                         '</div>' +
                         '<div class="response-text   chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
-                        '</div>';
+                        '</div>'
+                        ;
 
                     let response = responseContainer.firstChild;
 

@@ -10,7 +10,7 @@
     --color-red: #B20404;
     --color-yellow: #D99E2C;
 
-    
+
     --bg-color: #0b344f;
     --bg-gray: #c5c5c5;
     --bg-colorLight: #076d8f;
@@ -63,7 +63,7 @@ body {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    
+
 }
 
 /* Close panel button  */
@@ -72,7 +72,8 @@ body {
     width: auto;
 
 }
-.toggle{
+
+.toggle {
     height: 35px;
     width: 35px;
 
@@ -88,21 +89,23 @@ body {
 
 .scroll::-webkit-scrollbar {
     width: 8px;
-  }
-  .scroll::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.4);
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 10rem;
     border: 0px solid #fff;
-  }
+}
 
 
-  .scroll::-webkit-scrollbar-track-piece:start {
+.scroll::-webkit-scrollbar-track-piece:start {
     background: transparent;
-  }
+}
 
-  .scroll::-webkit-scrollbar-track-piece:end {
+.scroll::-webkit-scrollbar-track-piece:end {
     background: transparent;
-  }
+}
+
 /* .chat-history div, */
 /* .new-chat {
     display: flex;
@@ -132,7 +135,7 @@ body {
 }
 
 .chat-active {
-    background-color:#0283a2;
+    background-color: #0283a2;
     border-radius: 100px;
 
     color: white;
@@ -162,6 +165,7 @@ body {
 
 .content-box {
     padding-bottom: 80px;
+    width: 100%;
 }
 
 .content-section {
@@ -211,13 +215,15 @@ body {
     flex-direction: column;
 }
 
-.rounded{
+.rounded {
     border-radius: 20px !important;
 }
+
 .chat-information {
     margin-bottom: 20px;
     padding: 20px;
-    border-radius: 20px
+    border-radius: 20px;
+    margin: 0 20px;
 }
 
 .response-promt {
@@ -248,7 +254,8 @@ body {
 
 }
 
-.chat-topic:hover ,.item:hover{
+.chat-topic:hover,
+.item:hover {
     background-color: #c2cfd4;
     border-radius: 100px;
 

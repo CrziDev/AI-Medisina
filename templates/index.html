@@ -632,6 +632,7 @@
             chatRoomID: activeTopicID
         }).then(function (response) {
             let chatList = response.data
+            console.log(response.data.length);
 
             if (chatList.length !== 0) {
                 chatBox.innerHTML = '';
@@ -656,7 +657,8 @@
                     chatBox.appendChild(sender);
 
                     let responseContainer = document.createElement('div');
-                    responseContainer.innerHTML =
+                    let html
+                    html =
                         '<div class="response-promt chat-information">' +
                         '<div class="response-info chat-profile">' +
                         '<div class="border  rounded-circle d-flex align-items-center justify-content-center"' +
@@ -668,7 +670,15 @@
                         '</div>' +
                         '<div class="response-text   chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
                         '</div>'
+
                         ;
+
+                    if (chatID == chatList.length) {
+                        html += '<div id="reloadReponse" style="display:none" class=""><i class="bi bi-arrow-clockwise"></i></div>';
+
+                    }
+
+                    responseContainer.innerHTML = html
 
                     let response = responseContainer.firstChild;
 

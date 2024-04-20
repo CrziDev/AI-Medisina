@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -8,8 +8,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
@@ -88,10 +92,10 @@
 
         </div>
 
-        <div class="sidebar text-dark collapse">
+        <div class="sidebar   collapse">
 
 
-            <div class="text-dark">
+            <div class=" ">
 
             </div>
         </div>
@@ -115,8 +119,8 @@
                             <button class="btn float-end border bg-light p-1 rounded-circle toggle me-2" type="button"
                                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
-                                <img class="rounded-circle w-100 m-0"
-                                    src="{{ url_for('static',filename='/img/user.png') }}" alt="">
+                            
+                                    <i class="bi  h4 bi-person-fill"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end round" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item small" href="/logout">Logout</a></li>
@@ -152,32 +156,7 @@
 
                                 <div class="box">
                                     <div id="chat-box-container" class="content-box">
-                                        <!-- <div class="sender-promt chat-information ">
-                                            <div class="sender-info chat-profile">
-                                                <div class="border  rounded-circle d-flex align-items-center justify-content-center"
-                                                    style="width: 30px; height: 30px;"><img class="rounded-circle"
-                                                        src="/static//img/user.png" width="20px" alt="" srcset=""></div>
-                                                <p class="ms-3 h5 pt-2">You</p>
-                                            </div>
-                                            <div class="sender-text   chat-content">hi</div>
-                                        </div> -->
-                                        <!-- <div class="response-promt chat-information  ms-2 me-2">
-                                            <div class="response-info chat-profile  ">
-                                                <div class="border   rounded-circle d-flex align-items-center justify-content-center"
-                                                    style="width: 30px; height: 30px;"><img src="/static//img/logo.png"
-                                                        width="25px" alt="" srcset=""></div>
-                                                <p class="ms-3 h5 pt-2">AI-Medisina </p>
-                                            </div>
-                                            <div class="response-text  chat-content">
-                                                <div id="chatID0" class="">
-                                                    <p> Hello! How can I assist you today?</p> <span
-                                                        aria-hidden="true"></span>
-                                                </div>
-                                            </div>
-                                            <div id="reloadReponse" class="d-flex justify-content-end"><i
-                                                    class="bi bi-arrow-clockwise" onclick="reloadReponse()"></i></div>
-
-                                        </div> -->
+                                        
 
                                     </div>
                                 </div>
@@ -216,12 +195,13 @@
                                         class="bi bi-arrow-left"></i></span>Help</p>
 
                             <div class="border rounded bg-white mt-4 p-4">
-                                <p class="text-dark">Lorem ipsum dolor sit amet. Eos quia quisquam aut alias
+                                <span class="">Lorem ipsum dolor sit amet. Eos quia quisquam aut alias
                                     consequatur eum
                                     reprehenderit ipsam in galisum autem. Qui animi Quis sed cupiditate suscipit
                                     ex placeat
                                     perferendis qui deleniti sint?
-                                </p>
+                                </span>
+                                <br>
                                 <br>
                                 <div class="d-flex">
                                     <img src="{{ url_for('static',filename='/img/mail.svg') }}" width="30"
@@ -250,15 +230,11 @@
                             </p>
                             <p class="small h5 mt-4">Option</p>
                             <div class="border rounded bg-white  p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="w-100">
-                                        <span>Dark Mode</span>
+                                <div class=" d-flex align-items-center ">
+                                    <span class="me-2 w-100">Dark Mode</span>
+                                    <div class="form-check mt-1 form-switch">
+                                        <input class="form-check-input  " type="checkbox" id="btnSwitch">
                                     </div>
-
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                    </div>
-
                                 </div>
 
                             </div>
@@ -288,6 +264,8 @@
 </body>
 
 </html>
+<script src="{{ url_for('static',filename='js/settings.js') }}"></script>
+
 <script src="{{ url_for('static',filename='js/sweetalert.js') }}"></script>
 
 <script>
@@ -422,12 +400,12 @@
             '<div class="sender-info chat-profile">' +
             '<div class="border  rounded-circle d-flex align-items-center justify-content-center"' +
             'style="width: 30px; height: 30px;">' +
-            '<img class="rounded-circle" src="{{ url_for("static",filename="/img/user.png") }}" width="20px" alt=""' +
-            'srcset="">' +
+            '<i class="bi m-0 h5 bi-person-fill"></i>'+
+
             '</div>' +
             '<p class="ms-3 h5 pt-2">You</p>' +
             '</div>' +
-            '<div class="sender-text   chat-content">' + senderQuery.value + '</div>' +
+            '<div class="sender-text fw-normal  chat-content">' + senderQuery.value + '</div>' +
             '</div>';
 
         let sender = senderContainer.firstChild;
@@ -436,18 +414,18 @@
 
         let responseContainer = document.createElement('div');
         responseContainer.innerHTML =
-            '<div class="response-promt chat-information  ms-2 me-2" >' +
+            '<div class="response-promt chat-information  " >' +
             '<div class="response-info chat-profile  ">' +
             '<div class="border   rounded-circle d-flex align-items-center justify-content-center"' +
             'style="width: 30px; height: 30px;">' +
             '<img src="{{ url_for("static",filename="/img/logo.png") }}" width="25px" alt=""' +
             'srcset="">' +
             '</div>' +
-            '<p class="ms-3 h5 pt-2">AI-Medisina </p>' +
+            '<p class="ms-3 h5 pt-2 text-truncate">AI-Medisina &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>' +
             '</div>' +
-            '<div class="response-text  chat-content"><div id="' + chatContent + '" class="loader" > <span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span><div></div>' +
+            '<div class="response-text  fw-normal chat-content"><div id="' + chatContent + '" class="loader" > <span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span><div></div>' +
             '</div>' +
-            '<div id="reloadReponse" class="d-flex justify-content-end"><i class="bi bi-arrow-clockwise" onclick="reloadReponse()"></i></div>';
+            '<div id="reloadReponse" class="text-end"><i class="bi bi-arrow-clockwise" onclick="reloadReponse()"></i></div>';
 
 
         let response = responseContainer.firstChild;
@@ -645,12 +623,11 @@
                         '<div class="sender-info chat-profile">' +
                         '<div class="border  rounded-circle d-flex align-items-center justify-content-center"' +
                         'style="width: 30px; height: 30px;">' +
-                        '<img class="rounded-circle" src="{{ url_for("static",filename="/img/user.png") }}" width="20px" alt=""' +
-                        'srcset="">' +
+                        '<i class="bi m-0 h5 bi-person-fill"></i>'+
                         '</div>' +
                         '<p class="ms-3 h5 pt-2">You</p>' +
                         '</div>' +
-                        '<div class="sender-text   chat-content">' + chat['sender'] + '</div>' +
+                        '<div class="sender-text fw-normal  chat-content">' + chat['sender'] + '</div>' +
                         '</div>';
 
                     let sender = senderContainer.firstChild;
@@ -668,7 +645,7 @@
                         '</div>' +
                         '<p class="ms-3 h5 pt-2">AI-Medisina</p>' +
                         '</div>' +
-                        '<div class="response-text   chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
+                        '<div class="response-text fw-normal   chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
                         '</div>'
 
                         ;

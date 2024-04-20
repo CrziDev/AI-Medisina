@@ -14,7 +14,7 @@
     --bg-color: #0b344f;
     --bg-gray: #c5c5c5;
     --bg-colorLight: #076d8f;
-    --bg-colorFade: #eff8fb;
+    /* --bg-colorFade: #eff8fb; */
     --bg-colorFadeSecondary: #eaf3f5;
 }
 
@@ -33,6 +33,7 @@ body {
     height: 100vh;
     width: 100vw;
     font-family: var(--font-family-primary);
+    
 }
 
 .main-container {
@@ -135,7 +136,8 @@ body {
 }
 
 .chat-active {
-    background-color: #0283a2;
+    
+background-color: var(--item-text-bg-active);
     border-radius: 100px;
 
     color: white;
@@ -228,6 +230,7 @@ body {
 
 .response-promt {
     background-color: var(--bg-colorFade);
+    
 }
 
 .chat-profile {
@@ -247,6 +250,9 @@ body {
 .chat-content {
     margin-left: 40px;
 }
+.chat-content p{
+    color: var(--text-color);
+}
 
 .sender-input-field {
     /* background-color: #efefef; */
@@ -256,12 +262,15 @@ body {
 
 .chat-topic:hover,
 .item:hover {
-    background-color: #c2cfd4;
+    background-color: var(--item-text-bg);
     border-radius: 100px;
 
-    color: #222;
 }
 
+.item {
+    color: var(--text-color);
+
+}
 
 .sender-input-field input {
     border: none;

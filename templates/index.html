@@ -109,7 +109,7 @@
 
                         <a href="#" class="navbar-brand ms-3 ">
                             <div class="d-flex align-items-end">
-                                <h2 class="fs-3" style="font-weight: 550;"> <span style="color:#494949;">AI</span><span
+                                <h2 class="fs-3" style="font-weight: 550;" > <span class="text-secondary">AI</span><span
                                         style="color:#9b9b9b;">-</span><span class="gradient-text">Medisina</span>
                                 </h2>
                             </div>
@@ -168,7 +168,7 @@
                             <center>
                                 <div
                                     class="sender-input-field shadow-sm bg-light border col-sm-10 rounded-pill d-flex ">
-                                    <input type="text" name="query" id="sender-query" placeholder="Type here..."
+                                    <input type="text" name="query" id="sender-query"  placeholder="Type here..."
                                         value="">
                                     <button class="btn sender-btn  rounded-pill"><img
                                             src="{{ url_for('static',filename='/img/send.svg') }}" alt=""></button>
@@ -405,7 +405,7 @@
             '</div>' +
             '<p class="ms-3 h5 pt-2">You</p>' +
             '</div>' +
-            '<div class="sender-text fw-normal  chat-content">' + senderQuery.value + '</div>' +
+            '<div class="sender-text fw-normal  chat-content me-sm-4 ms-sm-4">' + senderQuery.value + '</div>' +
             '</div>';
 
         let sender = senderContainer.firstChild;
@@ -423,7 +423,7 @@
             '</div>' +
             '<p class="ms-3 h5 pt-2 text-truncate">AI-Medisina &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>' +
             '</div>' +
-            '<div class="response-text  fw-normal chat-content"><div id="' + chatContent + '" class="loader" > <span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span><div></div>' +
+            '<div class="response-text  fw-normal chat-content me-sm-4 ms-sm-4"><div id="' + chatContent + '" class="loader" > <span class="dot-1">•</span><span class="dot-2">•</span><span class="dot-3">•</span><div></div>' +
             '</div>' +
             '<div id="reloadReponse" class="text-end"><i class="bi bi-arrow-clockwise" onclick="reloadReponse()"></i></div>';
 
@@ -627,7 +627,7 @@
                         '</div>' +
                         '<p class="ms-3 h5 pt-2">You</p>' +
                         '</div>' +
-                        '<div class="sender-text fw-normal  chat-content">' + chat['sender'] + '</div>' +
+                        '<div class="sender-text fw-normal  chat-content me-sm-4 ms-sm-4">' + chat['sender'] + '</div>' +
                         '</div>';
 
                     let sender = senderContainer.firstChild;
@@ -645,7 +645,7 @@
                         '</div>' +
                         '<p class="ms-3 h5 pt-2">AI-Medisina</p>' +
                         '</div>' +
-                        '<div class="response-text fw-normal   chat-content"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
+                        '<div class="response-text fw-normal   chat-content me-sm-4 ms-sm-4"><div id="chatID' + index + '">' + formatTransmission(chat['response']) + '<div></div>' +
                         '</div>'
 
                         ;

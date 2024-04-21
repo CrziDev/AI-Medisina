@@ -9,7 +9,11 @@
     --text-color: #e6e6e6;
     --item-text-bg: #2f3d43;
     --item-text-bg-active: #026982;
-    
+    --gradient-blue-light:#01caf9;
+    --gradient-blue-mid:#077396;
+    --gradient-blue-dark:#0b344f;
+    --bg-colorFadeSecondary: #eaf3f5;
+
 }
 
 
@@ -22,7 +26,10 @@
     --text-color: #222222;
     --item-text-bg: #c2cfd4;
     --item-text-bg-active: #0283a2;
-
+    --gradient-blue-light:#00b5de;
+    --gradient-blue-mid:#077396;
+    --gradient-blue-dark:#12527d;
+    --bg-colorFadeSecondary: #eaf3f5;
 }
 
 .bg-white{
@@ -37,6 +44,9 @@
     --bg-colorLight: #076d8f;
     
     --bg-colorFadeSecondary: #eaf3f5;
+    --gradient-blue-light:#01caf9;
+    --gradient-blue-mid:#077396;
+    --gradient-blue-dark:#0b344f;
 
 }
 
@@ -68,7 +78,7 @@ html {
 }
 
 .gradient-text {
-    background-image: linear-gradient(to right, #01caf9, #01caf9, #077396, #0b344f, #0b344f);
+    background-image: linear-gradient(to right, var(--gradient-blue-light), var(--gradient-blue-light), var(--gradient-blue-mid), var(--gradient-blue-dark), var(--gradient-blue-dark));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
